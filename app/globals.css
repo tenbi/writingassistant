@@ -87,6 +87,10 @@ textarea {
   gap: 14px;
 }
 
+.panel.stack {
+  gap: 18px;
+}
+
 .profileSection {
   display: grid;
   gap: 14px;
@@ -102,7 +106,7 @@ textarea {
 }
 
 .field label {
-  font-size: 0.95rem;
+  font-size: 1.2rem;
   font-weight: 700;
 }
 

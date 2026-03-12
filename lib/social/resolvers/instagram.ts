@@ -18,6 +18,8 @@ export function resolveInstagramProfile(inputUrl: string): ResolvedSocialProfile
     userId: handle,
     userName: fallbackUserName(handle, "Instagram"),
     profileUrl: handle ? `https://www.instagram.com/${handle}/` : "https://www.instagram.com/",
+    viewCount: "",
+    likeCount: "",
     warnings,
   };
 }

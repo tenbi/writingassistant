@@ -6,6 +6,8 @@ export function renderTemplate({ templateId, profile, creditType }: RenderTempla
   const platformCopy = PLATFORM_LABELS[profile.platform];
   const userIdWithAt = ensureAtPrefix(profile.userId);
   const authorLabel = resolveAuthorLabel(profile.userName, userIdWithAt);
+  const engagementCount = resolveCountValue(profile.viewCount);
+  const likesCount = resolveCountValue(profile.likeCount);
 
   const variables: TemplateVariables = {
     platform: platformCopy.mediaLabel,
@@ -14,6 +16,9 @@ export function renderTemplate({ templateId, profile, creditType }: RenderTempla
     platform_post_label: platformCopy.postLabel,
     service_name: platformCopy.label,
     author_label: authorLabel,
+    engagement_count: engagementCount,
+    engagement_label: profile.platform === "tiktok" ? "再生" : "表示",
+    likes_count: likesCount,
     post_url: profile.normalizedUrl,
     embed_shortcode: buildEmbedShortcode(profile.platform, profile.normalizedUrl),
     display_name: authorLabel,
@@ -76,6 +81,11 @@ function ensureAtPrefix(userId: string): string {
 function resolveAuthorLabel(userName: string, userIdWithAt: string): string {
   const cleanedUserName = userName.trim();
   return cleanedUserName || userIdWithAt;
+}
+
+function resolveCountValue(value: string): string {
+  const cleaned = value.trim();
+  return cleaned || "____";
 }
 
 function buildEmbedShortcode(platform: RenderTemplateRequest["profile"]["platform"], normalizedUrl: string): string {

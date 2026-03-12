@@ -268,6 +268,19 @@ textarea {
   margin-bottom: 14px;
 }
 
+.outputActions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 0 0 auto;
+}
+
+.outputActions .button {
+  width: auto;
+  min-width: 72px;
+  padding: 0 16px;
+}
+
 .outputHeader h2,
 .sectionTitle {
   margin: 0;
@@ -291,18 +304,51 @@ textarea {
 .badge {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   min-height: 28px;
-  padding: 0 10px;
+  min-width: 64px;
+  padding: 0 12px;
   border-radius: 999px;
   background: var(--subtle-strong);
   color: var(--text);
   font-size: 0.83rem;
   font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.badge-x {
+  background: #111111;
+  color: #ffffff;
+}
+
+.badge-threads {
+  background: #000000;
+  color: #ffffff;
+}
+
+.badge-instagram {
+  background: linear-gradient(135deg, #f58529 0%, #dd2a7b 52%, #8134af 100%);
+  color: #ffffff;
+}
+
+.badge-tiktok {
+  background: #000000;
+  color: #ffffff;
 }
 
 @media (max-width: 860px) {
   .grid {
     grid-template-columns: 1fr;
+  }
+
+  .outputHeader {
+    align-items: flex-start;
+  }
+
+  .outputActions {
+    width: 100%;
+    justify-content: space-between;
   }
 
   .code {

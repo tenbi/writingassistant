@@ -19,6 +19,8 @@ export function resolveTikTokProfile(inputUrl: string): ResolvedSocialProfile {
     userId: handle,
     userName: fallbackUserName(handle, "TikTok"),
     profileUrl: handle ? `https://www.tiktok.com/@${handle}` : "https://www.tiktok.com/",
+    viewCount: "",
+    likeCount: "",
     warnings,
   };
 }

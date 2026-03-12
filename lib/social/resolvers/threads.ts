@@ -16,6 +16,8 @@ export function resolveThreadsProfile(inputUrl: string): ResolvedSocialProfile {
     userId: handle,
     userName: fallbackUserName(handle, "Threads"),
     profileUrl: handle ? `https://www.threads.net/@${handle}` : "https://www.threads.net/",
+    viewCount: "",
+    likeCount: "",
     warnings,
   };
 }

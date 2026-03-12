@@ -14,6 +14,8 @@ export type ResolvedSocialProfile = {
   userId: string;
   userName: string;
   profileUrl: string;
+  viewCount: string;
+  likeCount: string;
   warnings?: string[];
 };
 
@@ -48,6 +50,9 @@ export type TemplateVariables = {
   platform_post_label: string;
   service_name: string;
   author_label: string;
+  engagement_count: string;
+  engagement_label: string;
+  likes_count: string;
   post_url: string;
   embed_shortcode: string;
   display_name: string;

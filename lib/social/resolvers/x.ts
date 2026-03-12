@@ -14,6 +14,8 @@ export function resolveXProfile(inputUrl: string): ResolvedSocialProfile {
     userId: handle,
     userName: fallbackUserName(handle, "X"),
     profileUrl: handle ? `https://twitter.com/${handle}` : "https://twitter.com/",
+    viewCount: "",
+    likeCount: "",
     warnings,
   };
 }

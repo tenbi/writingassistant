@@ -24,6 +24,8 @@ const INITIAL_PROFILE: ResolvedSocialProfile = {
   userId: "",
   userName: "",
   profileUrl: "",
+  viewCount: "",
+  likeCount: "",
   warnings: [],
 };
 
@@ -297,6 +299,30 @@ export default function Page() {
                   プロフィールを開く
                 </a>
               ) : null}
+            </div>
+
+            <div className="inline profileInline">
+              <div className="field">
+                <label htmlFor="viewCount">
+                  {profile.platform === "tiktok" ? "再生数を入力する" : "表示数を入力する"}
+                </label>
+                <input
+                  id="viewCount"
+                  className="input"
+                  value={profile.viewCount}
+                  onChange={(event) => updateProfile("viewCount", event.target.value)}
+                />
+              </div>
+
+              <div className="field">
+                <label htmlFor="likeCount">いいね数を入力する</label>
+                <input
+                  id="likeCount"
+                  className="input"
+                  value={profile.likeCount}
+                  onChange={(event) => updateProfile("likeCount", event.target.value)}
+                />
+              </div>
             </div>
 
             {profile.warnings?.length ? (

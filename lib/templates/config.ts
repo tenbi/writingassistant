@@ -36,7 +36,7 @@ export const TEMPLATE_DEFINITIONS: TemplateDefinition[] = [
     name: "ネットの反応を見る",
     description: "反応まとめ用の固定文面テンプレートに、URL由来の情報だけ差し込みます。",
     content: `<!-- wp:paragraph -->
-<p>　hogehoge。そんなhogehogeをとらえた写真が、{{intro_platform_post_label}}で注目を集めています。</p>
+<p>　hogehoge。そんなhogehogeをとらえた写真が、{{intro_platform_post_label}}で注目を集めています。記事執筆時点で投稿は{{engagement_count}}回以上{{engagement_label}}され、およそ{{likes_count}}の「いいね」を獲得しています。</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:shortcode-preview/shortcode-preview {"shortcodeText":"{{embed_shortcode}}"} /-->
@@ -124,7 +124,7 @@ export const TEMPLATE_DEFINITIONS: TemplateDefinition[] = [
     name: "投稿者の他投稿まとめ",
     description: "投稿者の他投稿導線に寄せた固定文面テンプレートに、URL由来の情報だけ差し込みます。",
     content: `<!-- wp:paragraph -->
-<p>　hogehoge。そんなhogehogeをとらえた写真が、{{intro_platform_post_label}}で注目を集めています。</p>
+<p>　hogehoge。そんなhogehogeをとらえた写真が、{{intro_platform_post_label}}で注目を集めています。記事執筆時点で投稿は{{engagement_count}}回以上{{engagement_label}}され、およそ{{likes_count}}の「いいね」を獲得しています。</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:shortcode-preview/shortcode-preview {"shortcodeText":"{{embed_shortcode}}"} /-->

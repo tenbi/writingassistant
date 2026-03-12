@@ -1,21 +1,28 @@
 import type { SupportedPlatform, TemplateDefinition } from "@/lib/types";
 
-export const PLATFORM_LABELS: Record<SupportedPlatform, { label: string; mediaLabel: string }> = {
+export const PLATFORM_LABELS: Record<
+  SupportedPlatform,
+  { label: string; mediaLabel: string; postLabel: string }
+> = {
   x: {
     label: "X",
     mediaLabel: "X公式アカウント",
+    postLabel: "X（旧Twitter）",
   },
   threads: {
     label: "Threads",
     mediaLabel: "Threads公式アカウント",
+    postLabel: "Threads",
   },
   instagram: {
     label: "Instagram",
     mediaLabel: "Instagram公式アカウント",
+    postLabel: "Instagram",
   },
   tiktok: {
     label: "TikTok",
     mediaLabel: "TikTok公式アカウント",
+    postLabel: "TikTok",
   },
 };
 
@@ -25,7 +32,7 @@ export const TEMPLATE_DEFINITIONS: TemplateDefinition[] = [
     name: "ネットの反応を見る",
     description: "反応まとめ用の固定文面テンプレートに、URL由来の情報だけ差し込みます。",
     content: `<!-- wp:paragraph -->
-<p>　hogehoge。そんなhogehogeをとらえた写真が、X（旧Twitter）で注目を集めています。</p>
+<p>　hogehoge。そんなhogehogeをとらえた写真が、{{platform_post_label}}で注目を集めています。</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:shortcode-preview/shortcode-preview {"shortcodeText":"{{embed_shortcode}}"} /-->
@@ -35,7 +42,7 @@ export const TEMPLATE_DEFINITIONS: TemplateDefinition[] = [
 <!-- /wp:heading -->
 
 <!-- wp:paragraph -->
-<p>　投稿者は、～～～という{{display_name}}（{{user_id_link}}）さん。</p>
+<p>　投稿者は、～～～という{{display_name_link}}（{{user_id_link}}）さん。</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -113,7 +120,7 @@ export const TEMPLATE_DEFINITIONS: TemplateDefinition[] = [
     name: "投稿者の他投稿まとめ",
     description: "投稿者の他投稿導線に寄せた固定文面テンプレートに、URL由来の情報だけ差し込みます。",
     content: `<!-- wp:paragraph -->
-<p>　hogehoge。そんなhogehogeをとらえた写真が、X（旧Twitter）で注目を集めています。</p>
+<p>　hogehoge。そんなhogehogeをとらえた写真が、{{platform_post_label}}で注目を集めています。</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:shortcode-preview/shortcode-preview {"shortcodeText":"{{embed_shortcode}}"} /-->
@@ -123,7 +130,7 @@ export const TEMPLATE_DEFINITIONS: TemplateDefinition[] = [
 <!-- /wp:heading -->
 
 <!-- wp:paragraph -->
-<p>　投稿者は、～～～という{{display_name}}（{{user_id_link}}）さん。</p>
+<p>　投稿者は、～～～という{{display_name_link}}（{{user_id_link}}）さん。</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -147,7 +154,7 @@ export const TEMPLATE_DEFINITIONS: TemplateDefinition[] = [
 <!-- /wp:paragraph -->
 
 <!-- wp:heading -->
-<h2 class="wp-block-heading">{{display_name}}さんの投稿をもっと見る</h2>
+<h2 class="wp-block-heading">{{author_label}}さんの投稿をもっと見る</h2>
 <!-- /wp:heading -->
 
 <!-- wp:shortcode-preview/shortcode-preview /-->
@@ -183,7 +190,7 @@ export const TEMPLATE_DEFINITIONS: TemplateDefinition[] = [
 <!-- /wp:paragraph -->
 
 <!-- wp:heading -->
-<h2 class="wp-block-heading">{{display_name}}さんの投稿をもっと見る</h2>
+<h2 class="wp-block-heading">{{author_label}}さんの投稿をもっと見る</h2>
 <!-- /wp:heading -->
 
 <!-- wp:shortcode-preview/shortcode-preview /-->

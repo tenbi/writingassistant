@@ -5,22 +5,25 @@ export function renderTemplate({ templateId, profile, creditType }: RenderTempla
   const template = getTemplateById(templateId);
   const platformCopy = PLATFORM_LABELS[profile.platform];
   const userIdWithAt = ensureAtPrefix(profile.userId);
+  const authorLabel = resolveAuthorLabel(profile.userName, userIdWithAt);
 
   const variables: TemplateVariables = {
     platform: platformCopy.mediaLabel,
     platform_label: platformCopy.label,
+    platform_post_label: platformCopy.postLabel,
     service_name: platformCopy.label,
+    author_label: authorLabel,
     post_url: profile.normalizedUrl,
     embed_shortcode: `[twitter_embed ${profile.normalizedUrl}]`,
-    display_name: profile.userName,
-    display_name_link: buildDisplayNameLink(profile.userName, profile.profileUrl),
+    display_name: authorLabel,
+    display_name_link: buildDisplayNameLink(authorLabel, profile.profileUrl),
     normalized_url: profile.normalizedUrl,
     user_id: profile.userId,
     user_id_with_at: userIdWithAt,
-    user_name: profile.userName,
+    user_name: authorLabel,
     profile_url: profile.profileUrl,
     user_id_link: buildUserIdLink(userIdWithAt, profile.profileUrl),
-    credit_text: buildCreditText(creditType, platformCopy.label, profile.userName, userIdWithAt, profile.profileUrl),
+    credit_text: buildCreditText(creditType, platformCopy.label, authorLabel, userIdWithAt, profile.profileUrl),
   };
 
   return template.content.replace(/\{\{(\w+)\}\}/g, (_, key: keyof TemplateVariables) => {
@@ -67,6 +70,11 @@ function buildCreditText(
 
 function ensureAtPrefix(userId: string): string {
   return userId.startsWith("@") ? userId : `@${userId}`;
+}
+
+function resolveAuthorLabel(userName: string, userIdWithAt: string): string {
+  const cleanedUserName = userName.trim();
+  return cleanedUserName || userIdWithAt;
 }
 
 function escapeAttribute(value: string): string {

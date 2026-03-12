@@ -1,0 +1,209 @@
+import type { SupportedPlatform, TemplateDefinition } from "@/lib/types";
+
+export const PLATFORM_LABELS: Record<SupportedPlatform, { label: string; mediaLabel: string }> = {
+  x: {
+    label: "X",
+    mediaLabel: "X公式アカウント",
+  },
+  threads: {
+    label: "Threads",
+    mediaLabel: "Threads公式アカウント",
+  },
+  instagram: {
+    label: "Instagram",
+    mediaLabel: "Instagram公式アカウント",
+  },
+  tiktok: {
+    label: "TikTok",
+    mediaLabel: "TikTok公式アカウント",
+  },
+};
+
+export const TEMPLATE_DEFINITIONS: TemplateDefinition[] = [
+  {
+    id: "reactions-summary",
+    name: "ネットの反応を見る",
+    description: "反応まとめ用の固定文面テンプレートに、URL由来の情報だけ差し込みます。",
+    content: `<!-- wp:paragraph -->
+<p>　hogehoge。そんなhogehogeをとらえた写真が、X（旧Twitter）で注目を集めています。</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:shortcode-preview/shortcode-preview {"shortcodeText":"{{embed_shortcode}}"} /-->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">見出し1</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>　投稿者は、～～～という{{display_name}}（{{user_id_link}}）さん。</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>　段落2つ目</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>　段落3つ目</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">見出し2</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>　段落4つ目</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>　段落5つ目</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">ネットの反応を見る</h2>
+<!-- /wp:heading -->
+
+<!-- wp:shortcode-preview/shortcode-preview /-->
+
+<!-- wp:shortcode-preview/shortcode-preview /-->
+
+<!-- wp:shortcode-preview/shortcode-preview /-->
+
+<!-- wp:paragraph {"fontSize":"small"} -->
+<p class="has-small-font-size">{{credit_text}}</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:shortcode -->
+[next_pagelink]【SNSの反応をもっと見る】hogehoge[/next_pagelink]
+<!-- /wp:shortcode -->
+
+<!-- wp:nextpage -->
+<!--nextpage-->
+<!-- /wp:nextpage -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">見出し</h2>
+<!-- /wp:heading -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">話題の投稿</h2>
+<!-- /wp:heading -->
+
+<!-- wp:shortcode-preview/shortcode-preview {"shortcodeText":"{{embed_shortcode}}"} /-->
+
+<!-- wp:paragraph {"fontSize":"small"} -->
+<p class="has-small-font-size">{{credit_text}}</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">ネットの反応を見る</h2>
+<!-- /wp:heading -->
+
+<!-- wp:shortcode-preview/shortcode-preview /-->
+
+<!-- wp:shortcode-preview/shortcode-preview /-->
+
+<!-- wp:shortcode-preview/shortcode-preview /-->
+
+<!-- wp:paragraph -->
+<p></p>
+<!-- /wp:paragraph -->`,
+  },
+  {
+    id: "author-posts-summary",
+    name: "投稿者の他投稿まとめ",
+    description: "投稿者の他投稿導線に寄せた固定文面テンプレートに、URL由来の情報だけ差し込みます。",
+    content: `<!-- wp:paragraph -->
+<p>　hogehoge。そんなhogehogeをとらえた写真が、X（旧Twitter）で注目を集めています。</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:shortcode-preview/shortcode-preview {"shortcodeText":"{{embed_shortcode}}"} /-->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">見出し1</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>　投稿者は、～～～という{{display_name}}（{{user_id_link}}）さん。</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>　段落2つ目</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>　段落3つ目</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">見出し2</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>　段落4つ目</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>　段落5つ目</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">{{display_name}}さんの投稿をもっと見る</h2>
+<!-- /wp:heading -->
+
+<!-- wp:shortcode-preview/shortcode-preview /-->
+
+<!-- wp:shortcode-preview/shortcode-preview /-->
+
+<!-- wp:shortcode-preview/shortcode-preview /-->
+
+<!-- wp:paragraph {"fontSize":"small"} -->
+<p class="has-small-font-size">{{credit_text}}</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:shortcode -->
+[next_pagelink]【SNSの反応をもっと見る】hogehoge[/next_pagelink]
+<!-- /wp:shortcode -->
+
+<!-- wp:nextpage -->
+<!--nextpage-->
+<!-- /wp:nextpage -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">見出し</h2>
+<!-- /wp:heading -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">話題の投稿</h2>
+<!-- /wp:heading -->
+
+<!-- wp:shortcode-preview/shortcode-preview {"shortcodeText":"{{embed_shortcode}}"} /-->
+
+<!-- wp:paragraph {"fontSize":"small"} -->
+<p class="has-small-font-size">{{credit_text}}</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">{{display_name}}さんの投稿をもっと見る</h2>
+<!-- /wp:heading -->
+
+<!-- wp:shortcode-preview/shortcode-preview /-->
+
+<!-- wp:shortcode-preview/shortcode-preview /-->
+
+<!-- wp:shortcode-preview/shortcode-preview /-->
+
+<!-- wp:paragraph -->
+<p></p>
+<!-- /wp:paragraph -->`,
+  },
+];
+
+export function getTemplateById(templateId: string): TemplateDefinition {
+  const template = TEMPLATE_DEFINITIONS.find((item) => item.id === templateId);
+
+  if (!template) {
+    throw new Error("指定されたテンプレートが見つかりませんでした。");
+  }
+
+  return template;
+}

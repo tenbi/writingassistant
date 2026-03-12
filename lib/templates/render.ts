@@ -10,6 +10,7 @@ export function renderTemplate({ templateId, profile, creditType }: RenderTempla
   const variables: TemplateVariables = {
     platform: platformCopy.mediaLabel,
     platform_label: platformCopy.label,
+    intro_platform_post_label: platformCopy.introPostLabel,
     platform_post_label: platformCopy.postLabel,
     service_name: platformCopy.label,
     author_label: authorLabel,

@@ -44,6 +44,7 @@ export type RenderTemplateResponse = {
 export type TemplateVariables = {
   platform: string;
   platform_label: string;
+  intro_platform_post_label: string;
   platform_post_label: string;
   service_name: string;
   author_label: string;

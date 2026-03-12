@@ -2,26 +2,30 @@ import type { SupportedPlatform, TemplateDefinition } from "@/lib/types";
 
 export const PLATFORM_LABELS: Record<
   SupportedPlatform,
-  { label: string; mediaLabel: string; postLabel: string }
+  { label: string; mediaLabel: string; introPostLabel: string; postLabel: string }
 > = {
   x: {
     label: "X",
     mediaLabel: "X公式アカウント",
-    postLabel: "X（旧Twitter）",
+    introPostLabel: "X（旧Twitter）",
+    postLabel: "X",
   },
   threads: {
     label: "Threads",
     mediaLabel: "Threads公式アカウント",
+    introPostLabel: "Threads",
     postLabel: "Threads",
   },
   instagram: {
     label: "Instagram",
     mediaLabel: "Instagram公式アカウント",
+    introPostLabel: "Instagram",
     postLabel: "Instagram",
   },
   tiktok: {
     label: "TikTok",
     mediaLabel: "TikTok公式アカウント",
+    introPostLabel: "TikTok",
     postLabel: "TikTok",
   },
 };
@@ -32,7 +36,7 @@ export const TEMPLATE_DEFINITIONS: TemplateDefinition[] = [
     name: "ネットの反応を見る",
     description: "反応まとめ用の固定文面テンプレートに、URL由来の情報だけ差し込みます。",
     content: `<!-- wp:paragraph -->
-<p>　hogehoge。そんなhogehogeをとらえた写真が、{{platform_post_label}}で注目を集めています。</p>
+<p>　hogehoge。そんなhogehogeをとらえた写真が、{{intro_platform_post_label}}で注目を集めています。</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:shortcode-preview/shortcode-preview {"shortcodeText":"{{embed_shortcode}}"} /-->
@@ -120,7 +124,7 @@ export const TEMPLATE_DEFINITIONS: TemplateDefinition[] = [
     name: "投稿者の他投稿まとめ",
     description: "投稿者の他投稿導線に寄せた固定文面テンプレートに、URL由来の情報だけ差し込みます。",
     content: `<!-- wp:paragraph -->
-<p>　hogehoge。そんなhogehogeをとらえた写真が、{{platform_post_label}}で注目を集めています。</p>
+<p>　hogehoge。そんなhogehogeをとらえた写真が、{{intro_platform_post_label}}で注目を集めています。</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:shortcode-preview/shortcode-preview {"shortcodeText":"{{embed_shortcode}}"} /-->

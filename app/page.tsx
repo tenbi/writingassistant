@@ -226,7 +226,7 @@ export default function Page() {
             <h2 className="sectionTitle">編集可能なプロフィール情報</h2>
 
             <div className="field">
-              <label htmlFor="platform">platform</label>
+              <label htmlFor="platform">プラットフォーム</label>
               <select
                 id="platform"
                 className="select"
@@ -241,7 +241,7 @@ export default function Page() {
             </div>
 
             <div className="field">
-              <label htmlFor="normalizedUrl">normalized_url</label>
+              <label htmlFor="normalizedUrl">正規化URL</label>
               <input
                 id="normalizedUrl"
                 className="input"
@@ -253,7 +253,7 @@ export default function Page() {
 
             <div className="inline profileInline">
               <div className="field">
-                <label htmlFor="userId">user_id</label>
+                <label htmlFor="userId">ユーザーID</label>
                 <input
                   id="userId"
                   className="input"
@@ -263,7 +263,7 @@ export default function Page() {
               </div>
 
               <div className="field">
-                <label htmlFor="userName">user_name</label>
+                <label htmlFor="userName">表示名</label>
                 <input
                   id="userName"
                   className={`input${displayNameNeedsAttention ? " inputAlert" : ""}`}
@@ -279,7 +279,7 @@ export default function Page() {
             </div>
 
             <div className="field">
-              <label htmlFor="profileUrl">profile_url</label>
+              <label htmlFor="profileUrl">プロフィールURL</label>
               <input
                 id="profileUrl"
                 className="input"

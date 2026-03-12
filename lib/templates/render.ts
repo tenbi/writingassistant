@@ -1,13 +1,18 @@
+import { normalizeSocialUrl } from "@/lib/social/normalize";
+import { detectPlatform } from "@/lib/social/platform";
 import { PLATFORM_LABELS, getTemplateById } from "@/lib/templates/config";
 import type { RenderTemplateRequest, TemplateVariables } from "@/lib/types";
 
-export function renderTemplate({ templateId, profile, creditType }: RenderTemplateRequest): string {
+export function renderTemplate({ templateId, profile, creditType, reactionUrls }: RenderTemplateRequest): string {
   const template = getTemplateById(templateId);
   const platformCopy = PLATFORM_LABELS[profile.platform];
   const userIdWithAt = ensureAtPrefix(profile.userId);
   const authorLabel = resolveAuthorLabel(profile.userName, userIdWithAt);
   const engagementCount = resolveCountValue(profile.viewCount);
   const likesCount = resolveCountValue(profile.likeCount);
+  const reactionShortcodes = Array.from({ length: 6 }, (_, index) =>
+    buildEmbedShortcodeFromInput(reactionUrls[index] ?? ""),
+  );
 
   const variables: TemplateVariables = {
     platform: platformCopy.mediaLabel,
@@ -21,6 +26,12 @@ export function renderTemplate({ templateId, profile, creditType }: RenderTempla
     likes_count: likesCount,
     post_url: profile.normalizedUrl,
     embed_shortcode: buildEmbedShortcode(profile.platform, profile.normalizedUrl),
+    embed_shortcode_1: reactionShortcodes[0],
+    embed_shortcode_2: reactionShortcodes[1],
+    embed_shortcode_3: reactionShortcodes[2],
+    embed_shortcode_4: reactionShortcodes[3],
+    embed_shortcode_5: reactionShortcodes[4],
+    embed_shortcode_6: reactionShortcodes[5],
     display_name: authorLabel,
     display_name_link: buildDisplayNameLink(authorLabel, profile.profileUrl),
     normalized_url: profile.normalizedUrl,
@@ -100,6 +111,18 @@ function buildEmbedShortcode(platform: RenderTemplateRequest["profile"]["platfor
     default:
       return `[twitter_embed ${normalizedUrl}]`;
   }
+}
+
+function buildEmbedShortcodeFromInput(inputUrl: string): string {
+  const trimmed = inputUrl.trim();
+
+  if (!trimmed) {
+    return "";
+  }
+
+  const platform = detectPlatform(trimmed);
+  const normalizedUrl = normalizeSocialUrl(trimmed, platform);
+  return buildEmbedShortcode(platform, normalizedUrl);
 }
 
 function escapeAttribute(value: string): string {

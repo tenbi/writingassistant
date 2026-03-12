@@ -29,10 +29,13 @@ const INITIAL_PROFILE: ResolvedSocialProfile = {
   warnings: [],
 };
 
+const EMPTY_REACTION_URLS = Array.from({ length: 6 }, () => "");
+
 export default function Page() {
   const [templateId, setTemplateId] = useState(TEMPLATE_DEFINITIONS[0].id);
   const [inputUrl, setInputUrl] = useState("");
   const [profile, setProfile] = useState<ResolvedSocialProfile>(INITIAL_PROFILE);
+  const [reactionUrls, setReactionUrls] = useState<string[]>(EMPTY_REACTION_URLS);
   const [creditType, setCreditType] = useState<CreditType>("permission");
   const [output, setOutput] = useState("");
   const [status, setStatus] = useState("URL を入力して解析すると、手動編集付きでテンプレートを生成できます。");
@@ -43,7 +46,7 @@ export default function Page() {
 
   useEffect(() => {
     void generateOutput();
-  }, [templateId, profile, creditType]);
+  }, [templateId, profile, creditType, reactionUrls]);
 
   useEffect(() => {
     if (!copyToastVisible) {
@@ -91,6 +94,7 @@ export default function Page() {
         templateId,
         profile,
         creditType,
+        reactionUrls,
       });
 
       setOutput(rendered);
@@ -122,6 +126,10 @@ export default function Page() {
   function applySampleUrl(sampleUrl: string) {
     setInputUrl(sampleUrl);
     setStatus("サンプル URL を入力しました。解析ボタンで挙動を確認できます。");
+  }
+
+  function updateReactionUrl(index: number, value: string) {
+    setReactionUrls((current) => current.map((item, itemIndex) => (itemIndex === index ? value : item)));
   }
 
   return (
@@ -208,6 +216,24 @@ export default function Page() {
                 </button>
               ))}
             </div>
+          </div>
+
+          <div className="field">
+            <label>ネットの反応URL</label>
+            <div className="stack">
+              {reactionUrls.map((reactionUrl, index) => (
+                <input
+                  key={`reaction-url-${index + 1}`}
+                  id={`reactionUrl${index + 1}`}
+                  className="input"
+                  type="url"
+                  placeholder={`https://example.com/post/${index + 1}`}
+                  value={reactionUrl}
+                  onChange={(event) => updateReactionUrl(index, event.target.value)}
+                />
+              ))}
+            </div>
+            <span>空欄は未挿入になります。入力したURLは既存ルールで正規化して shortcode-preview に差し込みます。</span>
           </div>
 
           <button className="button" type="button" onClick={handleResolve} disabled={isResolving}>

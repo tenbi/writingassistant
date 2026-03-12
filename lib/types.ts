@@ -35,6 +35,7 @@ export type RenderTemplateRequest = {
   templateId: string;
   profile: ResolvedSocialProfile;
   creditType: CreditType;
+  reactionUrls: string[];
 };
 
 export type RenderTemplateResponse = {
@@ -55,6 +56,12 @@ export type TemplateVariables = {
   likes_count: string;
   post_url: string;
   embed_shortcode: string;
+  embed_shortcode_1: string;
+  embed_shortcode_2: string;
+  embed_shortcode_3: string;
+  embed_shortcode_4: string;
+  embed_shortcode_5: string;
+  embed_shortcode_6: string;
   display_name: string;
   display_name_link: string;
   normalized_url: string;

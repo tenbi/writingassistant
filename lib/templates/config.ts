@@ -73,11 +73,11 @@ export const TEMPLATE_DEFINITIONS: TemplateDefinition[] = [
 <h2 class="wp-block-heading">ネットの反応を見る</h2>
 <!-- /wp:heading -->
 
-<!-- wp:shortcode-preview/shortcode-preview /-->
+<!-- wp:shortcode-preview/shortcode-preview {"shortcodeText":"{{embed_shortcode_1}}"} /-->
 
-<!-- wp:shortcode-preview/shortcode-preview /-->
+<!-- wp:shortcode-preview/shortcode-preview {"shortcodeText":"{{embed_shortcode_2}}"} /-->
 
-<!-- wp:shortcode-preview/shortcode-preview /-->
+<!-- wp:shortcode-preview/shortcode-preview {"shortcodeText":"{{embed_shortcode_3}}"} /-->
 
 <!-- wp:paragraph {"fontSize":"small"} -->
 <p class="has-small-font-size">{{credit_text}}</p>
@@ -109,11 +109,11 @@ export const TEMPLATE_DEFINITIONS: TemplateDefinition[] = [
 <h2 class="wp-block-heading">ネットの反応を見る</h2>
 <!-- /wp:heading -->
 
-<!-- wp:shortcode-preview/shortcode-preview /-->
+<!-- wp:shortcode-preview/shortcode-preview {"shortcodeText":"{{embed_shortcode_4}}"} /-->
 
-<!-- wp:shortcode-preview/shortcode-preview /-->
+<!-- wp:shortcode-preview/shortcode-preview {"shortcodeText":"{{embed_shortcode_5}}"} /-->
 
-<!-- wp:shortcode-preview/shortcode-preview /-->
+<!-- wp:shortcode-preview/shortcode-preview {"shortcodeText":"{{embed_shortcode_6}}"} /-->
 
 <!-- wp:paragraph -->
 <p></p>
@@ -161,11 +161,11 @@ export const TEMPLATE_DEFINITIONS: TemplateDefinition[] = [
 <h2 class="wp-block-heading">{{author_label}}さんの投稿をもっと見る</h2>
 <!-- /wp:heading -->
 
-<!-- wp:shortcode-preview/shortcode-preview /-->
+<!-- wp:shortcode-preview/shortcode-preview {"shortcodeText":"{{embed_shortcode_1}}"} /-->
 
-<!-- wp:shortcode-preview/shortcode-preview /-->
+<!-- wp:shortcode-preview/shortcode-preview {"shortcodeText":"{{embed_shortcode_2}}"} /-->
 
-<!-- wp:shortcode-preview/shortcode-preview /-->
+<!-- wp:shortcode-preview/shortcode-preview {"shortcodeText":"{{embed_shortcode_3}}"} /-->
 
 <!-- wp:paragraph {"fontSize":"small"} -->
 <p class="has-small-font-size">{{credit_text}}</p>
@@ -197,11 +197,11 @@ export const TEMPLATE_DEFINITIONS: TemplateDefinition[] = [
 <h2 class="wp-block-heading">{{author_label}}さんの投稿をもっと見る</h2>
 <!-- /wp:heading -->
 
-<!-- wp:shortcode-preview/shortcode-preview /-->
+<!-- wp:shortcode-preview/shortcode-preview {"shortcodeText":"{{embed_shortcode_4}}"} /-->
 
-<!-- wp:shortcode-preview/shortcode-preview /-->
+<!-- wp:shortcode-preview/shortcode-preview {"shortcodeText":"{{embed_shortcode_5}}"} /-->
 
-<!-- wp:shortcode-preview/shortcode-preview /-->
+<!-- wp:shortcode-preview/shortcode-preview {"shortcodeText":"{{embed_shortcode_6}}"} /-->
 
 <!-- wp:paragraph -->
 <p></p>

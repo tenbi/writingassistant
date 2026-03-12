@@ -315,8 +315,8 @@ export default function Page() {
             <div>
               <h2>生成結果</h2>
             </div>
-            <div className="inline" style={{ flex: "0 0 auto" }}>
-              <span className="badge">{profile.platform.toUpperCase()}</span>
+            <div className="outputActions">
+              <span className={`badge badge-${profile.platform}`}>{profile.platform.toUpperCase()}</span>
               <button className="button secondary" type="button" onClick={handleCopy} disabled={!output}>
                 コピー
               </button>
@@ -338,7 +338,11 @@ function needsDisplayNameAttention(profile: ResolvedSocialProfile): boolean {
     return true;
   }
 
-  if (profile.platform === "threads" || profile.platform === "instagram") {
+  if (
+    profile.platform === "threads" ||
+    profile.platform === "instagram" ||
+    profile.platform === "tiktok"
+  ) {
     return !normalizedUserId || normalizedUserName === normalizedUserId;
   }
 

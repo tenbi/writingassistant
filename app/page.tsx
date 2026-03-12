@@ -36,6 +36,7 @@ export default function Page() {
   const [status, setStatus] = useState("URL を入力して解析すると、手動編集付きでテンプレートを生成できます。");
   const [isResolving, setIsResolving] = useState(false);
   const [isRendering, setIsRendering] = useState(false);
+  const displayNameNeedsAttention = needsDisplayNameAttention(profile);
 
   useEffect(() => {
     void generateOutput();
@@ -264,10 +265,15 @@ export default function Page() {
               <label htmlFor="userName">user_name</label>
               <input
                 id="userName"
-                className="input"
+                className={`input${displayNameNeedsAttention ? " inputAlert" : ""}`}
                 value={profile.userName}
                 onChange={(event) => updateProfile("userName", event.target.value)}
               />
+              {displayNameNeedsAttention ? (
+                <span className="alertText">
+                  表示名が未取得の可能性があります。必要に応じて手動で修正してください。
+                </span>
+              ) : null}
             </div>
           </div>
 
@@ -280,6 +286,16 @@ export default function Page() {
               value={profile.profileUrl}
               onChange={(event) => updateProfile("profileUrl", event.target.value)}
             />
+            {profile.profileUrl ? (
+              <a
+                className="textLink"
+                href={profile.profileUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                プロフィールを開く
+              </a>
+            ) : null}
           </div>
 
           {profile.warnings?.length ? (
@@ -310,4 +326,19 @@ export default function Page() {
       </section>
     </main>
   );
+}
+
+function needsDisplayNameAttention(profile: ResolvedSocialProfile): boolean {
+  const normalizedUserName = profile.userName.trim().replace(/^@/, "").toLowerCase();
+  const normalizedUserId = profile.userId.trim().replace(/^@/, "").toLowerCase();
+
+  if (!normalizedUserName) {
+    return true;
+  }
+
+  if (profile.platform === "threads" || profile.platform === "instagram") {
+    return !normalizedUserId || normalizedUserName === normalizedUserId;
+  }
+
+  return false;
 }

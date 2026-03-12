@@ -2,13 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { resolveSocialProfileClient } from "@/lib/social/client";
-import { renderTemplate } from "@/lib/templates/render";
 import { TEMPLATE_DEFINITIONS } from "@/lib/templates/config";
-import type {
-  CreditType,
-  ResolvedSocialProfile,
-  SupportedPlatform,
-} from "@/lib/types";
+import { renderTemplate } from "@/lib/templates/render";
+import type { CreditType, ResolvedSocialProfile, SupportedPlatform } from "@/lib/types";
 
 const SAMPLE_URLS = [
   { label: "X", url: "https://x.com/WhiteHouse/status/2026476098838532248" },
@@ -38,10 +34,14 @@ export default function Page() {
   const [reactionUrls, setReactionUrls] = useState<string[]>(EMPTY_REACTION_URLS);
   const [creditType, setCreditType] = useState<CreditType>("permission");
   const [output, setOutput] = useState("");
-  const [status, setStatus] = useState("URL を入力して解析すると、手動編集付きでテンプレートを生成できます。");
+  const [status, setStatus] = useState(
+    "URL を入力して解析すると、手動編集付きでテンプレートを生成できます。",
+  );
   const [isResolving, setIsResolving] = useState(false);
   const [isRendering, setIsRendering] = useState(false);
   const [copyToastVisible, setCopyToastVisible] = useState(false);
+  const selectedTemplate =
+    TEMPLATE_DEFINITIONS.find((template) => template.id === templateId) ?? TEMPLATE_DEFINITIONS[0];
   const displayNameNeedsAttention = needsDisplayNameAttention(profile);
 
   useEffect(() => {
@@ -66,7 +66,6 @@ export default function Page() {
 
     try {
       const data = await resolveSocialProfileClient(inputUrl);
-
       setProfile(data);
       setStatus(
         data.warnings?.length
@@ -218,23 +217,25 @@ export default function Page() {
             </div>
           </div>
 
-          <div className="field">
-            <label>ネットの反応URL</label>
-            <div className="stack">
-              {reactionUrls.map((reactionUrl, index) => (
-                <input
-                  key={`reaction-url-${index + 1}`}
-                  id={`reactionUrl${index + 1}`}
-                  className="input"
-                  type="url"
-                  placeholder={`https://example.com/post/${index + 1}`}
-                  value={reactionUrl}
-                  onChange={(event) => updateReactionUrl(index, event.target.value)}
-                />
-              ))}
+          {selectedTemplate.usesReactionUrls !== false ? (
+            <div className="field">
+              <label>ネットの反応URL</label>
+              <div className="stack">
+                {reactionUrls.map((reactionUrl, index) => (
+                  <input
+                    key={`reaction-url-${index + 1}`}
+                    id={`reactionUrl${index + 1}`}
+                    className="input"
+                    type="url"
+                    placeholder={`https://example.com/post/${index + 1}`}
+                    value={reactionUrl}
+                    onChange={(event) => updateReactionUrl(index, event.target.value)}
+                  />
+                ))}
+              </div>
+              <span>空欄は未挿入になります。入力したURLは既存ルールで正規化して shortcode-preview に差し込みます。</span>
             </div>
-            <span>空欄は未挿入になります。入力したURLは既存ルールで正規化して shortcode-preview に差し込みます。</span>
-          </div>
+          ) : null}
 
           <button className="button" type="button" onClick={handleResolve} disabled={isResolving}>
             {isResolving ? "解析中..." : "URLを解析"}
@@ -279,7 +280,7 @@ export default function Page() {
                 />
                 {displayNameNeedsAttention ? (
                   <span className="alertText">
-                    表示名が未取得の可能性があります。必要に応じて手動で修正してください。
+                    表示名が未入力か、取得値の精度に注意が必要です。必要に応じて手動で修正してください。
                   </span>
                 ) : null}
               </div>
@@ -287,9 +288,7 @@ export default function Page() {
 
             <div className="inline profileInline">
               <div className="field">
-                <label htmlFor="viewCount">
-                  {profile.platform === "tiktok" ? "再生数を入力する" : "表示数を入力する"}
-                </label>
+                <label htmlFor="viewCount">{profile.platform === "tiktok" ? "再生数" : "表示数"}</label>
                 <input
                   id="viewCount"
                   className="input"
@@ -299,7 +298,7 @@ export default function Page() {
               </div>
 
               <div className="field">
-                <label htmlFor="likeCount">いいね数を入力する</label>
+                <label htmlFor="likeCount">いいね数</label>
                 <input
                   id="likeCount"
                   className="input"
@@ -343,7 +342,7 @@ export default function Page() {
 
             {profile.warnings?.length ? (
               <div className="field warningBox">
-                <label>resolver からの補足</label>
+                <label>resolver からの警告</label>
                 <span>{profile.warnings.join(" ")}</span>
               </div>
             ) : null}
@@ -365,7 +364,7 @@ export default function Page() {
             </div>
           </div>
 
-          <pre className="code">{output || "ここに Gutenberg 用のプレーンテキストが表示されます。"}</pre>
+          <pre className="code">{output || "ここに Gutenberg 用のテンプレートテキストが表示されます。"}</pre>
         </div>
       </section>
 

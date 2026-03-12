@@ -5,6 +5,7 @@ export type TemplateDefinition = {
   name: string;
   description: string;
   content: string;
+  usesReactionUrls?: boolean;
 };
 
 export type ResolvedSocialProfile = {

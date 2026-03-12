@@ -42,7 +42,7 @@ export const TEMPLATE_DEFINITIONS: TemplateDefinition[] = [
 <!-- /wp:heading -->
 
 <!-- wp:paragraph -->
-<p>　投稿者は、～～～という{{display_name_link}}（{{user_id_link}}）さん。</p>
+<p>　投稿者は、{{platform_post_label}}ユーザーの{{display_name_link}}（{{user_id_link}}）さん。</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -130,7 +130,7 @@ export const TEMPLATE_DEFINITIONS: TemplateDefinition[] = [
 <!-- /wp:heading -->
 
 <!-- wp:paragraph -->
-<p>　投稿者は、～～～という{{display_name_link}}（{{user_id_link}}）さん。</p>
+<p>　投稿者は、{{platform_post_label}}ユーザーの{{display_name_link}}（{{user_id_link}}）さん。</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->

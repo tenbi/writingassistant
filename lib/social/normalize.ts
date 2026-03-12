@@ -10,7 +10,7 @@ export function normalizeSocialUrl(inputUrl: string, platform: SupportedPlatform
   }
 
   if (platform === "threads") {
-    url.hostname = "threads.net";
+    url.hostname = "www.threads.net";
   }
 
   url.pathname = cleanupPath(url.pathname);

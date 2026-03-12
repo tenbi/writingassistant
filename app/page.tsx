@@ -1,12 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { resolveSocialProfileClient } from "@/lib/social/client";
+import { renderTemplate } from "@/lib/templates/render";
 import { TEMPLATE_DEFINITIONS } from "@/lib/templates/config";
 import type {
   CreditType,
-  RenderTemplateResponse,
   ResolvedSocialProfile,
-  ResolveSocialResponse,
   SupportedPlatform,
 } from "@/lib/types";
 
@@ -38,35 +38,36 @@ export default function Page() {
   const [status, setStatus] = useState("URL を入力して解析すると、手動編集付きでテンプレートを生成できます。");
   const [isResolving, setIsResolving] = useState(false);
   const [isRendering, setIsRendering] = useState(false);
+  const [copyToastVisible, setCopyToastVisible] = useState(false);
   const displayNameNeedsAttention = needsDisplayNameAttention(profile);
 
   useEffect(() => {
     void generateOutput();
   }, [templateId, profile, creditType]);
 
+  useEffect(() => {
+    if (!copyToastVisible) {
+      return;
+    }
+
+    const timeoutId = window.setTimeout(() => {
+      setCopyToastVisible(false);
+    }, 600);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [copyToastVisible]);
+
   async function handleResolve() {
     setIsResolving(true);
     setStatus("URL を解析しています。");
 
     try {
-      const response = await fetch("/api/resolve-social", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ url: inputUrl }),
-      });
+      const data = await resolveSocialProfileClient(inputUrl);
 
-      const data = (await response.json()) as ResolveSocialResponse;
-
-      if (!data.ok || !data.data) {
-        throw new Error(data.error ?? "URL の解析に失敗しました。");
-      }
-
-      setProfile(data.data);
+      setProfile(data);
       setStatus(
-        data.data.warnings?.length
-          ? data.data.warnings.join(" ")
+        data.warnings?.length
+          ? data.warnings.join(" ")
           : "URL から情報を取得しました。必要なら下の項目を手動で編集できます。",
       );
     } catch (error) {
@@ -86,25 +87,13 @@ export default function Page() {
     setIsRendering(true);
 
     try {
-      const response = await fetch("/api/render-template", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          templateId,
-          profile,
-          creditType,
-        }),
+      const rendered = renderTemplate({
+        templateId,
+        profile,
+        creditType,
       });
 
-      const data = (await response.json()) as RenderTemplateResponse;
-
-      if (!data.ok || !data.output) {
-        throw new Error(data.error ?? "テンプレートの生成に失敗しました。");
-      }
-
-      setOutput(data.output);
+      setOutput(rendered);
     } catch (error) {
       const message = error instanceof Error ? error.message : "テンプレートの生成に失敗しました。";
       setStatus(message);
@@ -120,6 +109,7 @@ export default function Page() {
 
     await navigator.clipboard.writeText(output);
     setStatus("生成テキストをクリップボードにコピーしました。");
+    setCopyToastVisible(true);
   }
 
   function updateProfile<K extends keyof ResolvedSocialProfile>(key: K, value: ResolvedSocialProfile[K]) {
@@ -352,6 +342,13 @@ export default function Page() {
           <pre className="code">{output || "ここに Gutenberg 用のプレーンテキストが表示されます。"}</pre>
         </div>
       </section>
+
+      <div className={`dialogOverlay${copyToastVisible ? " visible" : ""}`} aria-hidden={!copyToastVisible}>
+        <div className="dialogToast" role="status" aria-live="polite">
+          <div className="dialogToastTitle">コピーしました</div>
+          <div className="dialogToastBody">生成結果をクリップボードへ保存しました。</div>
+        </div>
+      </div>
     </main>
   );
 }

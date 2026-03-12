@@ -99,17 +99,25 @@ npm run dev
 npm run build
 ```
 
+このリポジトリは GitHub Pages 向けに static export する構成です。`npm run build` 後に `out/` が生成されます。
+
+## GitHub Pages
+
+- `main` へ push すると GitHub Actions が `out/` をビルドして Pages へデプロイします。
+- 公開先は通常 `https://<user>.github.io/writingassistant/` です。
+- Next.js の `basePath` / `assetPrefix` は GitHub Actions 実行時に自動で `writingassistant` 向けに切り替わります。
+
+## 制約
+
+- GitHub Pages 対応のため、URL 解析とテンプレート生成はクライアント側で完結する構成に寄せています。
+- Threads / Instagram / TikTok の表示名は自動取得せず、必要に応じて手動補完する前提です。
+- X の表示名もブラウザ環境で取得できない場合は手動補完になります。
+- サーバー API ルートは使用していません。
+
 注意:
 
 - `npm run dev` 実行中に `npm run build` を同じ `.next` に対して並行実行すると、生成物が競合して不整合が出ることがあります。
 - ビルド確認するときは、開発サーバーを止めてから実行するのが安全です。
-
-## 現時点の制約
-
-- テンプレート本文にはまだ仮文言が残っています。
-- Threads / Instagram の表示名取得はベストエフォートです。
-- shortcode の種類は出し分けていますが、実際の WordPress 側 shortcode 実装との最終整合は別途確認が必要です。
-- 大きく作り変える前提ではなく、固定テンプレート方式を維持して改善していく方針です。
 
 ## 主要ファイル
 

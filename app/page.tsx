@@ -242,17 +242,6 @@ export default function Page() {
               </select>
             </div>
 
-            <div className="field">
-              <label htmlFor="normalizedUrl">正規化URL</label>
-              <input
-                id="normalizedUrl"
-                className="input"
-                type="url"
-                value={profile.normalizedUrl}
-                onChange={(event) => updateProfile("normalizedUrl", event.target.value)}
-              />
-            </div>
-
             <div className="inline profileInline">
               <div className="field">
                 <label htmlFor="userId">ユーザーID</label>
@@ -280,27 +269,6 @@ export default function Page() {
               </div>
             </div>
 
-            <div className="field">
-              <label htmlFor="profileUrl">プロフィールURL</label>
-              <input
-                id="profileUrl"
-                className="input"
-                type="url"
-                value={profile.profileUrl}
-                onChange={(event) => updateProfile("profileUrl", event.target.value)}
-              />
-              {profile.profileUrl ? (
-                <a
-                  className="textLink"
-                  href={profile.profileUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  プロフィールを開く
-                </a>
-              ) : null}
-            </div>
-
             <div className="inline profileInline">
               <div className="field">
                 <label htmlFor="viewCount">
@@ -323,6 +291,38 @@ export default function Page() {
                   onChange={(event) => updateProfile("likeCount", event.target.value)}
                 />
               </div>
+            </div>
+
+            <div className="field">
+              <label htmlFor="profileUrl">プロフィールURL</label>
+              <input
+                id="profileUrl"
+                className="input"
+                type="url"
+                value={profile.profileUrl}
+                onChange={(event) => updateProfile("profileUrl", event.target.value)}
+              />
+              {profile.profileUrl ? (
+                <a
+                  className="textLink"
+                  href={profile.profileUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  プロフィールを開く
+                </a>
+              ) : null}
+            </div>
+
+            <div className="field">
+              <label htmlFor="normalizedUrl">正規化URL</label>
+              <input
+                id="normalizedUrl"
+                className="input"
+                type="url"
+                value={profile.normalizedUrl}
+                onChange={(event) => updateProfile("normalizedUrl", event.target.value)}
+              />
             </div>
 
             {profile.warnings?.length ? (

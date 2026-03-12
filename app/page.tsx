@@ -31,7 +31,7 @@ export default function Page() {
   const [templateId, setTemplateId] = useState(TEMPLATE_DEFINITIONS[0].id);
   const [inputUrl, setInputUrl] = useState("");
   const [profile, setProfile] = useState<ResolvedSocialProfile>(INITIAL_PROFILE);
-  const [creditType, setCreditType] = useState<CreditType>("quote");
+  const [creditType, setCreditType] = useState<CreditType>("permission");
   const [output, setOutput] = useState("");
   const [status, setStatus] = useState("URL を入力して解析すると、手動編集付きでテンプレートを生成できます。");
   const [isResolving, setIsResolving] = useState(false);
@@ -222,88 +222,90 @@ export default function Page() {
             {isResolving ? "解析中..." : "URLを解析"}
           </button>
 
-          <h2 className="sectionTitle">編集可能なプロフィール情報</h2>
+          <div className="profileSection">
+            <h2 className="sectionTitle">編集可能なプロフィール情報</h2>
 
-          <div className="field">
-            <label htmlFor="platform">platform</label>
-            <select
-              id="platform"
-              className="select"
-              value={profile.platform}
-              onChange={(event) => updateProfile("platform", event.target.value as SupportedPlatform)}
-            >
-              <option value="x">X</option>
-              <option value="threads">Threads</option>
-              <option value="instagram">Instagram</option>
-              <option value="tiktok">TikTok</option>
-            </select>
-          </div>
-
-          <div className="field">
-            <label htmlFor="normalizedUrl">normalized_url</label>
-            <input
-              id="normalizedUrl"
-              className="input"
-              type="url"
-              value={profile.normalizedUrl}
-              onChange={(event) => updateProfile("normalizedUrl", event.target.value)}
-            />
-          </div>
-
-          <div className="inline">
             <div className="field">
-              <label htmlFor="userId">user_id</label>
-              <input
-                id="userId"
-                className="input"
-                value={profile.userId}
-                onChange={(event) => updateProfile("userId", event.target.value)}
-              />
+              <label htmlFor="platform">platform</label>
+              <select
+                id="platform"
+                className="select"
+                value={profile.platform}
+                onChange={(event) => updateProfile("platform", event.target.value as SupportedPlatform)}
+              >
+                <option value="x">X</option>
+                <option value="threads">Threads</option>
+                <option value="instagram">Instagram</option>
+                <option value="tiktok">TikTok</option>
+              </select>
             </div>
 
             <div className="field">
-              <label htmlFor="userName">user_name</label>
+              <label htmlFor="normalizedUrl">normalized_url</label>
               <input
-                id="userName"
-                className={`input${displayNameNeedsAttention ? " inputAlert" : ""}`}
-                value={profile.userName}
-                onChange={(event) => updateProfile("userName", event.target.value)}
+                id="normalizedUrl"
+                className="input"
+                type="url"
+                value={profile.normalizedUrl}
+                onChange={(event) => updateProfile("normalizedUrl", event.target.value)}
               />
-              {displayNameNeedsAttention ? (
-                <span className="alertText">
-                  表示名が未取得の可能性があります。必要に応じて手動で修正してください。
-                </span>
+            </div>
+
+            <div className="inline profileInline">
+              <div className="field">
+                <label htmlFor="userId">user_id</label>
+                <input
+                  id="userId"
+                  className="input"
+                  value={profile.userId}
+                  onChange={(event) => updateProfile("userId", event.target.value)}
+                />
+              </div>
+
+              <div className="field">
+                <label htmlFor="userName">user_name</label>
+                <input
+                  id="userName"
+                  className={`input${displayNameNeedsAttention ? " inputAlert" : ""}`}
+                  value={profile.userName}
+                  onChange={(event) => updateProfile("userName", event.target.value)}
+                />
+                {displayNameNeedsAttention ? (
+                  <span className="alertText">
+                    表示名が未取得の可能性があります。必要に応じて手動で修正してください。
+                  </span>
+                ) : null}
+              </div>
+            </div>
+
+            <div className="field">
+              <label htmlFor="profileUrl">profile_url</label>
+              <input
+                id="profileUrl"
+                className="input"
+                type="url"
+                value={profile.profileUrl}
+                onChange={(event) => updateProfile("profileUrl", event.target.value)}
+              />
+              {profile.profileUrl ? (
+                <a
+                  className="textLink"
+                  href={profile.profileUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  プロフィールを開く
+                </a>
               ) : null}
             </div>
-          </div>
 
-          <div className="field">
-            <label htmlFor="profileUrl">profile_url</label>
-            <input
-              id="profileUrl"
-              className="input"
-              type="url"
-              value={profile.profileUrl}
-              onChange={(event) => updateProfile("profileUrl", event.target.value)}
-            />
-            {profile.profileUrl ? (
-              <a
-                className="textLink"
-                href={profile.profileUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                プロフィールを開く
-              </a>
+            {profile.warnings?.length ? (
+              <div className="field warningBox">
+                <label>resolver からの補足</label>
+                <span>{profile.warnings.join(" ")}</span>
+              </div>
             ) : null}
           </div>
-
-          {profile.warnings?.length ? (
-            <div className="field">
-              <label>resolver からの補足</label>
-              <span>{profile.warnings.join(" ")}</span>
-            </div>
-          ) : null}
 
           <p className="status">{isRendering ? "テンプレートを生成しています。" : status}</p>
         </div>

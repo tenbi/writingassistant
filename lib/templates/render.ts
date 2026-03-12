@@ -14,7 +14,7 @@ export function renderTemplate({ templateId, profile, creditType }: RenderTempla
     service_name: platformCopy.label,
     author_label: authorLabel,
     post_url: profile.normalizedUrl,
-    embed_shortcode: `[twitter_embed ${profile.normalizedUrl}]`,
+    embed_shortcode: buildEmbedShortcode(profile.platform, profile.normalizedUrl),
     display_name: authorLabel,
     display_name_link: buildDisplayNameLink(authorLabel, profile.profileUrl),
     normalized_url: profile.normalizedUrl,
@@ -75,6 +75,20 @@ function ensureAtPrefix(userId: string): string {
 function resolveAuthorLabel(userName: string, userIdWithAt: string): string {
   const cleanedUserName = userName.trim();
   return cleanedUserName || userIdWithAt;
+}
+
+function buildEmbedShortcode(platform: RenderTemplateRequest["profile"]["platform"], normalizedUrl: string): string {
+  switch (platform) {
+    case "instagram":
+      return `[insta_embed ${normalizedUrl}]`;
+    case "threads":
+      return `[threads_embed ${normalizedUrl}]`;
+    case "tiktok":
+      return `[tiktok_embed ${normalizedUrl}]`;
+    case "x":
+    default:
+      return `[twitter_embed ${normalizedUrl}]`;
+  }
 }
 
 function escapeAttribute(value: string): string {

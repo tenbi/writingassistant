@@ -1,12 +1,14 @@
 :root {
   color-scheme: light;
-  --bg: #f5f1e8;
-  --panel: #fffdf8;
-  --line: #d4c8b8;
-  --text: #1f1b16;
-  --muted: #6f655a;
-  --accent: #a64b2a;
-  --accent-strong: #7e351b;
+  --bg: #f5f7fa;
+  --panel: #ffffff;
+  --line: #d7dde5;
+  --text: #1f2937;
+  --muted: #6b7280;
+  --accent: #1f2937;
+  --accent-strong: #111827;
+  --subtle: #f8fafc;
+  --subtle-strong: #eef2f7;
 }
 
 * {
@@ -17,11 +19,9 @@ html,
 body {
   margin: 0;
   min-height: 100%;
-  background:
-    radial-gradient(circle at top, rgba(166, 75, 42, 0.12), transparent 28%),
-    linear-gradient(180deg, #f8f3ea 0%, var(--bg) 100%);
+  background: var(--bg);
   color: var(--text);
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: Helvetica, "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
 }
 
 body {
@@ -45,14 +45,14 @@ textarea {
 }
 
 .hero {
-  margin-bottom: 24px;
+  margin-bottom: 28px;
 }
 
 .hero h1 {
   margin: 0 0 8px;
-  font-size: clamp(2rem, 5vw, 3.4rem);
-  line-height: 1;
-  letter-spacing: -0.04em;
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  line-height: 1.08;
+  letter-spacing: -0.02em;
 }
 
 .hero p {
@@ -65,19 +65,29 @@ textarea {
   display: grid;
   grid-template-columns: minmax(320px, 420px) minmax(0, 1fr);
   gap: 20px;
+  align-items: start;
 }
 
 .panel {
-  background: color-mix(in srgb, var(--panel) 92%, white 8%);
+  background: var(--panel);
   border: 1px solid var(--line);
-  border-radius: 18px;
+  border-radius: 14px;
   padding: 20px;
-  box-shadow: 0 14px 30px rgba(69, 49, 28, 0.08);
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
 }
 
 .stack {
   display: grid;
   gap: 14px;
+}
+
+.profileSection {
+  display: grid;
+  gap: 14px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--subtle);
 }
 
 .field {
@@ -97,7 +107,7 @@ textarea {
 
 .alertText {
   color: var(--accent-strong);
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .input,
@@ -105,7 +115,7 @@ textarea {
 .select,
 .button {
   width: 100%;
-  border-radius: 12px;
+  border-radius: 10px;
   border: 1px solid var(--line);
   background: #fff;
   color: var(--text);
@@ -119,9 +129,9 @@ textarea {
 }
 
 .inputAlert {
-  border-color: #c86a47;
-  background: #fff4ee;
-  box-shadow: 0 0 0 3px rgba(200, 106, 71, 0.12);
+  border-color: #f59e0b;
+  background: #fffdf5;
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.12);
 }
 
 .textarea {
@@ -132,7 +142,7 @@ textarea {
 
 .button {
   background: var(--accent);
-  color: #fff7f2;
+  color: #ffffff;
   font-weight: 700;
   cursor: pointer;
   transition: background-color 160ms ease, transform 160ms ease;
@@ -144,7 +154,7 @@ textarea {
 }
 
 .button.secondary {
-  background: #efe5d8;
+  background: var(--subtle);
   color: var(--text);
 }
 
@@ -177,21 +187,21 @@ textarea {
   gap: 4px;
   padding: 14px;
   border: 1px solid var(--line);
-  border-radius: 14px;
-  background: #fff8ef;
+  border-radius: 12px;
+  background: var(--panel);
   cursor: pointer;
   transition: border-color 160ms ease, background-color 160ms ease, transform 160ms ease;
 }
 
 .choiceCard:hover {
   transform: translateY(-1px);
-  border-color: #b58d6d;
+  border-color: #9aa4b2;
 }
 
 .choiceCard.active {
   border-color: var(--accent);
-  background: #fff1e8;
-  box-shadow: inset 0 0 0 1px rgba(166, 75, 42, 0.2);
+  background: var(--subtle);
+  box-shadow: inset 0 0 0 1px rgba(17, 24, 39, 0.08);
 }
 
 .choiceCard input {
@@ -201,7 +211,9 @@ textarea {
 .choiceCard.compact {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
+  padding: 10px 12px;
+  min-height: 42px;
 }
 
 .choiceTitle {
@@ -218,7 +230,7 @@ textarea {
   padding: 0 12px;
   border: 1px solid var(--line);
   border-radius: 999px;
-  background: #fff8ef;
+  background: var(--panel);
   color: var(--text);
   cursor: pointer;
 }
@@ -229,10 +241,21 @@ textarea {
   color: var(--muted);
 }
 
+.profileInline {
+  align-items: start;
+}
+
+.warningBox {
+  padding: 12px 14px;
+  border: 1px solid #f2d28b;
+  border-radius: 10px;
+  background: #fffdf5;
+}
+
 .textLink {
   width: fit-content;
   font-size: 0.86rem;
-  color: var(--accent-strong);
+  color: #2563eb;
   text-decoration: underline;
   text-underline-offset: 0.14em;
 }
@@ -256,10 +279,10 @@ textarea {
   margin: 0;
   padding: 16px;
   overflow: auto;
-  border-radius: 14px;
-  border: 1px solid #d7c9b5;
-  background: #fff;
-  font-family: "SFMono-Regular", Consolas, monospace;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: var(--subtle);
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
   font-size: 0.9rem;
   line-height: 1.55;
   white-space: pre-wrap;
@@ -271,8 +294,8 @@ textarea {
   min-height: 28px;
   padding: 0 10px;
   border-radius: 999px;
-  background: #f1e7d9;
-  color: #6e4b2d;
+  background: var(--subtle-strong);
+  color: var(--text);
   font-size: 0.83rem;
   font-weight: 700;
 }

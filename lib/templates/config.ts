@@ -80,7 +80,7 @@ export const TEMPLATE_DEFINITIONS: TemplateDefinition[] = [
 <!-- /wp:paragraph -->
 
 <!-- wp:shortcode -->
-[next_pagelink]【SNSの反応をもっと見る】hogehoge[/next_pagelink]
+[next_pagelink]【画像】hogehoge[/next_pagelink]
 <!-- /wp:shortcode -->
 
 <!-- wp:nextpage -->

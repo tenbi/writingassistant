@@ -1,131 +1,40 @@
 # writingassistant
 
-SNS 投稿 URL から、WordPress ブロックエディタ向けのテンプレート本文を生成する Next.js + TypeScript の Web アプリです。
+SNS 投稿 URL から、WordPress ブロックエディタ向けのテンプレート本文を生成する GitHub Pages 対応の Web アプリです。
 
-## 概要
+## アプリ概要
 
-このアプリは、X / Threads / Instagram / TikTok の投稿 URL を解析し、媒体掲載向けの固定テンプレートへ必要な情報を差し込んで出力します。
+このアプリでは、X / Threads / Instagram / TikTok の投稿 URL をもとに、媒体掲載向けの固定テンプレートを出力できます。
 
-現時点では、以下の情報を扱います。
+- テンプレートを選ぶ
+- クレジット種別を選ぶ
+- SNS 投稿 URL を入力する
+- 必要ならプロフィール情報を手動で整える
+- 生成結果をコピーして使う
 
-- `platform`
-- `normalizedUrl`
-- `userId`
-- `userName`
-- `profileUrl`
+URL から取得した情報は左カラムで編集できるので、自動取得しきれない項目があってもそのまま補正できます。
 
-テンプレートは可変生成ではなく、固定文面の決まった位置に URL 由来の情報を差し込む方式です。
+## GitHub Pages での使い方
 
-## 現在できること
+公開中の GitHub Pages を開いて、そのままブラウザ上で使えます。
 
-- Next.js App Router ベースの Web UI
-- 投稿 URL の platform 判定と正規化
-- X / Threads / Instagram / TikTok の resolver
-- テンプレート選択
-  - `ネットの反応を見る`
-  - `投稿者の他投稿まとめ`
-- クレジット種別の切り替え
-  - `引用`
-  - `許諾あり`
+1. GitHub Pages の公開 URL にアクセスする
+2. テンプレートを選ぶ
+3. クレジット種別を選ぶ
+4. SNS 投稿 URL を入力して `テンプレートを出力` を押す
+5. 必要に応じて `ユーザーID` `表示名` `プロフィールURL` などを修正する
+6. 右側の生成結果を確認して `コピー` を押す
+
+## できること
+
+- X / Threads / Instagram / TikTok の投稿 URL 入力
+- URL の正規化とプラットフォーム判定
+- テンプレート切り替え
+- クレジット種別切り替え
 - 解析結果の手動編集
-  - `platform`
-  - `normalized_url`
-  - `user_id`
-  - `user_name`
-  - `profile_url`
-- 生成テキストのプレビューとコピー
-- 媒体別の embed shortcode 出力
-  - X: `[twitter_embed {url}]`
-  - Instagram: `[insta_embed {url}]`
-  - Threads: `[threads_embed {url}]`
-  - TikTok: `[tiktok_embed {url}]`
+- WordPress 向けテンプレートテキストの生成
+- 生成結果のコピー
 
-## 表示名取得の現状
+## ドキュメント
 
-- X は `oEmbed` を使って比較的安定して表示名を取得できます。
-- Threads / Instagram は投稿 URL からの表示名自動取得が不安定です。
-- TikTok は handle 解決はできますが、表示名取得は未強化です。
-
-そのため、Threads / Instagram では `user_name` の手動補完が前提になる場合があります。
-
-## 投稿指標の取得
-
-- `表示回数`
-- `いいね数`
-
-は自動取得ではなく、UI 上で手動入力する前提です。
-
-TikTok の場合は `表示回数` ではなく `再生数` として扱います。
-
-## 使い方
-
-### 1. 依存関係をインストール
-
-```bash
-npm install
-```
-
-### 2. 開発サーバーを起動
-
-```bash
-npm run dev
-```
-
-ブラウザで `http://localhost:3000` を開きます。
-
-### 3. URL を解析
-
-1. テンプレートを選ぶ
-2. クレジット種別を選ぶ
-3. SNS 投稿 URL を入力する
-4. `URLを解析` を押す
-
-### 4. 必要なら手動で修正
-
-左カラムのプロフィール情報を必要に応じて編集します。
-
-- `user_name` が期待どおりでない場合は手動修正
-- `profile_url` から元プロフィールを開いて確認可能
-
-### 5. 生成結果をコピー
-
-右カラムの生成結果を確認し、`コピー` ボタンで使用します。
-
-## ビルド
-
-本番ビルド確認は以下です。
-
-```bash
-npm run build
-```
-
-このリポジトリは GitHub Pages 向けに static export する構成です。`npm run build` 後に `out/` が生成されます。
-
-## GitHub Pages
-
-- `main` へ push すると GitHub Actions が `out/` をビルドして Pages へデプロイします。
-- 公開先は通常 `https://<user>.github.io/writingassistant/` です。
-- Next.js の `basePath` / `assetPrefix` は GitHub Actions 実行時に自動で `writingassistant` 向けに切り替わります。
-
-## 制約
-
-- GitHub Pages 対応のため、URL 解析とテンプレート生成はクライアント側で完結する構成に寄せています。
-- Threads / Instagram / TikTok の表示名は自動取得せず、必要に応じて手動補完する前提です。
-- X の表示名もブラウザ環境で取得できない場合は手動補完になります。
-- サーバー API ルートは使用していません。
-
-注意:
-
-- `npm run dev` 実行中に `npm run build` を同じ `.next` に対して並行実行すると、生成物が競合して不整合が出ることがあります。
-- ビルド確認するときは、開発サーバーを止めてから実行するのが安全です。
-
-## 主要ファイル
-
-- `app/page.tsx`
-- `app/api/resolve-social/route.ts`
-- `app/api/render-template/route.ts`
-- `lib/social/*`
-- `lib/templates/config.ts`
-- `lib/templates/render.ts`
-- `docs/display-name-strategy.md`
-- `docs/implementation-plan.md`
+内部向けメモや制約、現状、ロードマップは [docs/README.md](/Users/tenbi/Documents/GPT%20Codex/Writing%20Assistant/docs/README.md) にまとめています。

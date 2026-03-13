@@ -12,8 +12,8 @@
 
 X は公開 `oEmbed` を使うことで、投稿 URL から `author_name` を比較的安定して取得できる。
 
-一方で Threads / Instagram は、匿名のサーバーサイド取得だけで表示名を安定抽出するのが難しい。
-公開 HTML には表示名相当が含まれるケースもあるが、取得条件や返却内容が不安定で、現状の route 実行経路では handle fallback になることがある。
+一方で Threads / Instagram は、匿名の公開情報だけで表示名を安定抽出するのが難しい。
+公開 HTML には表示名相当が含まれるケースもあるが、取得条件や返却内容が不安定で、現状は handle fallback になることがある。
 
 ## 方式1: ログイン済みブラウザ経由で取得する
 
@@ -26,7 +26,7 @@ X は公開 `oEmbed` を使うことで、投稿 URL から `author_name` を比
 1. `app/page.tsx` で「ブラウザ取得モード」を用意する
 2. クライアント側 fetch もしくはブラウザ自動化で対象 URL にアクセスする
 3. DOM / meta / 埋め込み JSON から表示名を抽出する
-4. 結果を UI に反映し、その後 `/api/render-template` に渡す
+4. 結果を UI に反映し、テンプレート生成に使う
 
 ### 実装候補
 
@@ -65,10 +65,10 @@ X は公開 `oEmbed` を使うことで、投稿 URL から `author_name` を比
 
 ### 具体的な実装イメージ
 
-1. `/api/resolve-social` で URL 解析
+1. UI から URL を解析する
 2. platform ごとに公開情報から `userId`, `profileUrl`, `userName` をベストエフォート取得
 3. 失敗時は `warnings` を返す
-4. UI で `user_name` 入力欄を強調し、手動補完しやすくする
+4. UI で `user_name` 入力欄や warning を使って手動補完しやすくする
 
 ### 追加改善案
 

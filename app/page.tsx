@@ -40,6 +40,7 @@ export default function Page() {
   const [status, setStatus] = useState(
     "URL を入力して解析すると、手動編集付きでテンプレートを生成できます。",
   );
+  const [renderError, setRenderError] = useState("");
   const [isResolving, setIsResolving] = useState(false);
   const [isRendering, setIsRendering] = useState(false);
   const [copyToastVisible, setCopyToastVisible] = useState(false);
@@ -92,6 +93,7 @@ export default function Page() {
   async function generateOutput() {
     if (!profile.normalizedUrl || !profile.userId || !profile.profileUrl) {
       setOutput("");
+      setRenderError("");
       return;
     }
 
@@ -106,9 +108,11 @@ export default function Page() {
       });
 
       setOutput(rendered);
+      setRenderError("");
     } catch (error) {
       const message = error instanceof Error ? error.message : "テンプレートの生成に失敗しました。";
       setStatus(message);
+      setRenderError(message);
     } finally {
       setIsRendering(false);
     }
@@ -174,16 +178,6 @@ export default function Page() {
           <div className="field">
             <label>クレジット種別</label>
             <div className="choiceGrid compact">
-              <label className={`choiceCard compact${creditType === "quote" ? " active" : ""}`}>
-                <input
-                  type="radio"
-                  name="creditType"
-                  value="quote"
-                  checked={creditType === "quote"}
-                  onChange={() => setCreditType("quote")}
-                />
-                <span className="choiceTitle">引用</span>
-              </label>
               <label className={`choiceCard compact${creditType === "permission" ? " active" : ""}`}>
                 <input
                   type="radio"
@@ -193,6 +187,16 @@ export default function Page() {
                   onChange={() => setCreditType("permission")}
                 />
                 <span className="choiceTitle">許諾あり</span>
+              </label>
+              <label className={`choiceCard compact${creditType === "quote" ? " active" : ""}`}>
+                <input
+                  type="radio"
+                  name="creditType"
+                  value="quote"
+                  checked={creditType === "quote"}
+                  onChange={() => setCreditType("quote")}
+                />
+                <span className="choiceTitle">引用</span>
               </label>
             </div>
           </div>
@@ -228,7 +232,9 @@ export default function Page() {
 
           {selectedTemplate.usesReactionUrls !== false ? (
             <div className="field">
-              <label>ネットの反応URL</label>
+              <label>
+                {selectedTemplate.id === "author-posts-summary" ? "他投稿のURL" : "ネットの反応URL"}
+              </label>
               <div className="stack">
                 {reactionUrls.map((reactionUrl, index) => (
                   <input
@@ -247,7 +253,7 @@ export default function Page() {
           ) : null}
 
           <button className="button" type="button" onClick={handleResolve} disabled={isResolving}>
-            {isResolving ? "解析中..." : "URLを解析"}
+            {isResolving ? "解析中..." : "テンプレートを出力"}
           </button>
 
           <div className="profileSection">
@@ -352,7 +358,7 @@ export default function Page() {
             ) : null}
           </div>
 
-          <p className="status">{isRendering ? "テンプレートを生成しています。" : status}</p>
+          {renderError ? <p className="status">{renderError}</p> : null}
         </div>
 
         <div className="panel">

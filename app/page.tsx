@@ -26,6 +26,9 @@ const INITIAL_PROFILE: ResolvedSocialProfile = {
 };
 
 const EMPTY_REACTION_URLS = Array.from({ length: 6 }, () => "");
+const HIDDEN_WARNING_MESSAGES = new Set([
+  "表示名の自動取得はできなかったため、必要に応じて user_name を手動で編集してください。",
+]);
 
 export default function Page() {
   const [templateId, setTemplateId] = useState(TEMPLATE_DEFINITIONS[0].id);
@@ -43,6 +46,12 @@ export default function Page() {
   const selectedTemplate =
     TEMPLATE_DEFINITIONS.find((template) => template.id === templateId) ?? TEMPLATE_DEFINITIONS[0];
   const displayNameNeedsAttention = needsDisplayNameAttention(profile);
+  const profileWarnings = [
+    ...(displayNameNeedsAttention
+      ? ["表示名が未入力か、取得値の精度に注意が必要です。必要に応じて手動で修正してください。"]
+      : []),
+    ...(profile.warnings ?? []).filter((warning) => !HIDDEN_WARNING_MESSAGES.has(warning)),
+  ];
 
   useEffect(() => {
     void generateOutput();
@@ -278,11 +287,6 @@ export default function Page() {
                   value={profile.userName}
                   onChange={(event) => updateProfile("userName", event.target.value)}
                 />
-                {displayNameNeedsAttention ? (
-                  <span className="alertText">
-                    表示名が未入力か、取得値の精度に注意が必要です。必要に応じて手動で修正してください。
-                  </span>
-                ) : null}
               </div>
             </div>
 
@@ -340,10 +344,10 @@ export default function Page() {
               />
             </div>
 
-            {profile.warnings?.length ? (
+            {profileWarnings.length ? (
               <div className="field warningBox">
-                <label>resolver からの警告</label>
-                <span>{profile.warnings.join(" ")}</span>
+                <label>確認ポイント</label>
+                <span>{profileWarnings.join(" ")}</span>
               </div>
             ) : null}
           </div>

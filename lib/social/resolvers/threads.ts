@@ -1,25 +1,18 @@
 import type { ResolvedSocialProfile } from "@/lib/types";
-import { normalizeSocialUrl } from "@/lib/social/normalize";
-import { fallbackUserName, sanitizeHandle } from "@/lib/social/resolvers/shared";
+import { buildResolvedProfile, sanitizeHandle } from "@/lib/social/resolvers/shared";
 
 export function resolveThreadsProfile(inputUrl: string): ResolvedSocialProfile {
   const url = new URL(inputUrl);
   const handle = getHandle(url);
-  const warnings = handle
-    ? []
-    : ["Threads の URL から user_id を特定できなかったため、手動入力してください。"];
-
-  return {
+  return buildResolvedProfile({
     platform: "threads",
-    originalUrl: inputUrl,
-    normalizedUrl: normalizeSocialUrl(inputUrl, "threads"),
-    userId: handle,
-    userName: fallbackUserName(handle, "Threads"),
-    profileUrl: handle ? `https://www.threads.net/@${handle}` : "https://www.threads.net/",
-    viewCount: "",
-    likeCount: "",
-    warnings,
-  };
+    inputUrl,
+    handle,
+    fallbackLabel: "Threads",
+    emptyProfileUrl: "https://www.threads.net/",
+    warningMessage: "Threads の URL から user_id を特定できなかったため、手動入力してください。",
+    profileUrl: (userId) => `https://www.threads.net/@${userId}`,
+  });
 }
 
 function getHandle(url: URL): string {

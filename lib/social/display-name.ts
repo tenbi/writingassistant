@@ -1,5 +1,10 @@
 import type { ResolvedSocialProfile } from "@/lib/types";
 import type { SupportedPlatform } from "@/lib/types";
+import {
+  appendWarning,
+  cleanupDisplayName,
+  DISPLAY_NAME_MANUAL_EDIT_WARNING,
+} from "@/lib/social/display-name-shared";
 import { fetchSocialMetadata, fetchSocialMetadataViaCurl } from "@/lib/social/metadata";
 
 export async function enrichDisplayName(profile: ResolvedSocialProfile): Promise<ResolvedSocialProfile> {
@@ -20,10 +25,7 @@ export async function enrichDisplayName(profile: ResolvedSocialProfile): Promise
     (await fetchSocialMetadata(enrichedIdentity.profileUrl));
 
   if (!metadata) {
-    return appendWarning(
-      enrichedIdentity,
-      "表示名の自動取得はできなかったため、必要に応じて user_name を手動で編集してください。",
-    );
+    return appendWarning(enrichedIdentity, DISPLAY_NAME_MANUAL_EDIT_WARNING);
   }
 
   const candidate = parseDisplayName(enrichedIdentity.platform, enrichedIdentity.userId, [
@@ -34,10 +36,7 @@ export async function enrichDisplayName(profile: ResolvedSocialProfile): Promise
   ]);
 
   if (!candidate) {
-    return appendWarning(
-      enrichedIdentity,
-      "表示名の自動取得はできなかったため、必要に応じて user_name を手動で編集してください。",
-    );
+    return appendWarning(enrichedIdentity, DISPLAY_NAME_MANUAL_EDIT_WARNING);
   }
 
   return {
@@ -117,24 +116,6 @@ function firstMatch(value: string, pattern: RegExp): string | null {
   const match = value.match(pattern);
   const candidate = cleanupDisplayName(match?.[1] ?? "");
   return candidate || null;
-}
-
-function cleanupDisplayName(value: string): string {
-  return value
-    .replace(/\s+/g, " ")
-    .replace(/&#064;/g, "@")
-    .replace(/^["'\s]+|["'\s]+$/g, "")
-    .trim();
-}
-
-function appendWarning(profile: ResolvedSocialProfile, warning: string): ResolvedSocialProfile {
-  const warnings = new Set(profile.warnings ?? []);
-  warnings.add(warning);
-
-  return {
-    ...profile,
-    warnings: Array.from(warnings),
-  };
 }
 
 function escapeRegex(value: string): string {

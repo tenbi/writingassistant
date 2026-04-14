@@ -1,58 +1,40 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import {
+  buildResolvedStatusMessage,
+  COPIED_STATUS_MESSAGE,
+  createEmptyReactionUrls,
+  createInitialProfile,
+  DEFAULT_STATUS_MESSAGE,
+  getProfileWarnings,
+  getReactionUrlsLabel,
+  getSelectedTemplate,
+  needsDisplayNameAttention,
+  RESOLVING_STATUS_MESSAGE,
+  SAMPLE_URL_STATUS_MESSAGE,
+  SAMPLE_URLS,
+} from "@/app/page-helpers";
 import { resolveSocialProfileClient } from "@/lib/social/client";
 import { TEMPLATE_DEFINITIONS } from "@/lib/templates/config";
 import { renderTemplate } from "@/lib/templates/render";
 import type { CreditType, ResolvedSocialProfile, SupportedPlatform } from "@/lib/types";
 
-const SAMPLE_URLS = [
-  { label: "X", url: "https://x.com/WhiteHouse/status/2026476098838532248" },
-  { label: "Threads", url: "https://www.threads.com/@zuck/post/DLk8_example" },
-  { label: "Instagram", url: "https://www.instagram.com/nasa/reel/DLk8_example/" },
-  { label: "TikTok", url: "https://www.tiktok.com/@nba/video/7480000000000000000" },
-];
-
-const INITIAL_PROFILE: ResolvedSocialProfile = {
-  platform: "x",
-  originalUrl: "",
-  normalizedUrl: "",
-  userId: "",
-  userName: "",
-  profileUrl: "",
-  viewCount: "",
-  likeCount: "",
-  warnings: [],
-};
-
-const EMPTY_REACTION_URLS = Array.from({ length: 6 }, () => "");
-const HIDDEN_WARNING_MESSAGES = new Set([
-  "表示名の自動取得はできなかったため、必要に応じて user_name を手動で編集してください。",
-]);
-
 export default function Page() {
   const [templateId, setTemplateId] = useState(TEMPLATE_DEFINITIONS[0].id);
   const [inputUrl, setInputUrl] = useState("");
-  const [profile, setProfile] = useState<ResolvedSocialProfile>(INITIAL_PROFILE);
-  const [reactionUrls, setReactionUrls] = useState<string[]>(EMPTY_REACTION_URLS);
+  const [profile, setProfile] = useState<ResolvedSocialProfile>(() => createInitialProfile());
+  const [reactionUrls, setReactionUrls] = useState<string[]>(() => createEmptyReactionUrls());
   const [creditType, setCreditType] = useState<CreditType>("permission");
   const [output, setOutput] = useState("");
-  const [status, setStatus] = useState(
-    "URL を入力して解析すると、手動編集付きでテンプレートを生成できます。",
-  );
+  const [status, setStatus] = useState(DEFAULT_STATUS_MESSAGE);
   const [renderError, setRenderError] = useState("");
   const [isResolving, setIsResolving] = useState(false);
   const [isRendering, setIsRendering] = useState(false);
   const [copyToastVisible, setCopyToastVisible] = useState(false);
-  const selectedTemplate =
-    TEMPLATE_DEFINITIONS.find((template) => template.id === templateId) ?? TEMPLATE_DEFINITIONS[0];
+  const selectedTemplate = getSelectedTemplate(templateId);
   const displayNameNeedsAttention = needsDisplayNameAttention(profile);
-  const profileWarnings = [
-    ...(displayNameNeedsAttention
-      ? ["表示名が未入力か、取得値の精度に注意が必要です。必要に応じて手動で修正してください。"]
-      : []),
-    ...(profile.warnings ?? []).filter((warning) => !HIDDEN_WARNING_MESSAGES.has(warning)),
-  ];
+  const profileWarnings = getProfileWarnings(profile);
 
   useEffect(() => {
     void generateOutput();
@@ -72,16 +54,12 @@ export default function Page() {
 
   async function handleResolve() {
     setIsResolving(true);
-    setStatus("URL を解析しています。");
+    setStatus(RESOLVING_STATUS_MESSAGE);
 
     try {
       const data = await resolveSocialProfileClient(inputUrl);
       setProfile(data);
-      setStatus(
-        data.warnings?.length
-          ? data.warnings.join(" ")
-          : "URL から情報を取得しました。必要なら下の項目を手動で編集できます。",
-      );
+      setStatus(buildResolvedStatusMessage(data));
     } catch (error) {
       const message = error instanceof Error ? error.message : "URL の解析に失敗しました。";
       setStatus(message);
@@ -124,7 +102,7 @@ export default function Page() {
     }
 
     await navigator.clipboard.writeText(output);
-    setStatus("生成テキストをクリップボードにコピーしました。");
+    setStatus(COPIED_STATUS_MESSAGE);
     setCopyToastVisible(true);
   }
 
@@ -137,7 +115,7 @@ export default function Page() {
 
   function applySampleUrl(sampleUrl: string) {
     setInputUrl(sampleUrl);
-    setStatus("サンプル URL を入力しました。解析ボタンで挙動を確認できます。");
+    setStatus(SAMPLE_URL_STATUS_MESSAGE);
   }
 
   function updateReactionUrl(index: number, value: string) {
@@ -233,7 +211,7 @@ export default function Page() {
           {selectedTemplate.usesReactionUrls !== false ? (
             <div className="field">
               <label>
-                {selectedTemplate.id === "author-posts-summary" ? "他投稿のURL" : "ネットの反応URL"}
+                {getReactionUrlsLabel(selectedTemplate.id)}
               </label>
               <div className="stack">
                 {reactionUrls.map((reactionUrl, index) => (
@@ -386,23 +364,4 @@ export default function Page() {
       </div>
     </main>
   );
-}
-
-function needsDisplayNameAttention(profile: ResolvedSocialProfile): boolean {
-  const normalizedUserName = profile.userName.trim().replace(/^@/, "").toLowerCase();
-  const normalizedUserId = profile.userId.trim().replace(/^@/, "").toLowerCase();
-
-  if (!normalizedUserName) {
-    return true;
-  }
-
-  if (
-    profile.platform === "threads" ||
-    profile.platform === "instagram" ||
-    profile.platform === "tiktok"
-  ) {
-    return !normalizedUserId || normalizedUserName === normalizedUserId;
-  }
-
-  return false;
 }

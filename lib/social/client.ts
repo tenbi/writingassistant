@@ -1,28 +1,17 @@
 import type { ResolvedSocialProfile } from "@/lib/types";
-import { detectPlatform } from "@/lib/social/platform";
-import { resolveInstagramProfile } from "@/lib/social/resolvers/instagram";
-import { resolveThreadsProfile } from "@/lib/social/resolvers/threads";
-import { resolveTikTokProfile } from "@/lib/social/resolvers/tiktok";
-import { resolveXProfile } from "@/lib/social/resolvers/x";
+import {
+  appendWarning,
+  cleanupDisplayName,
+  DISPLAY_NAME_MANUAL_EDIT_WARNING,
+} from "@/lib/social/display-name-shared";
+import { resolveSocialProfileBase } from "@/lib/social/resolve-profile";
+
+const MANUAL_DISPLAY_NAME_PLATFORMS = new Set(["threads", "instagram", "tiktok"]);
 
 export async function resolveSocialProfileClient(inputUrl: string): Promise<ResolvedSocialProfile> {
-  const platform = detectPlatform(inputUrl);
-  const resolvedProfile = (() => {
-    switch (platform) {
-      case "x":
-        return resolveXProfile(inputUrl);
-      case "threads":
-        return resolveThreadsProfile(inputUrl);
-      case "instagram":
-        return resolveInstagramProfile(inputUrl);
-      case "tiktok":
-        return resolveTikTokProfile(inputUrl);
-      default:
-        throw new Error("未対応のプラットフォームです。");
-    }
-  })();
+  const resolvedProfile = resolveSocialProfileBase(inputUrl);
 
-  if (platform === "x") {
+  if (resolvedProfile.platform === "x") {
     const xDisplayName = await fetchXDisplayName(resolvedProfile.normalizedUrl);
 
     if (xDisplayName) {
@@ -33,11 +22,8 @@ export async function resolveSocialProfileClient(inputUrl: string): Promise<Reso
     }
   }
 
-  if (platform === "threads" || platform === "instagram" || platform === "tiktok") {
-    return appendWarning(
-      resolvedProfile,
-      "表示名の自動取得はできなかったため、必要に応じて user_name を手動で編集してください。",
-    );
+  if (MANUAL_DISPLAY_NAME_PLATFORMS.has(resolvedProfile.platform)) {
+    return appendWarning(resolvedProfile, DISPLAY_NAME_MANUAL_EDIT_WARNING);
   }
 
   return resolvedProfile;
@@ -66,22 +52,4 @@ async function fetchXDisplayName(targetUrl: string): Promise<string | null> {
   } catch {
     return null;
   }
-}
-
-function appendWarning(profile: ResolvedSocialProfile, warning: string): ResolvedSocialProfile {
-  const warnings = new Set(profile.warnings ?? []);
-  warnings.add(warning);
-
-  return {
-    ...profile,
-    warnings: Array.from(warnings),
-  };
-}
-
-function cleanupDisplayName(value: string): string {
-  return value
-    .replace(/\s+/g, " ")
-    .replace(/&#064;/g, "@")
-    .replace(/^["'\s]+|["'\s]+$/g, "")
-    .trim();
 }

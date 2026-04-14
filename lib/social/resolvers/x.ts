@@ -1,23 +1,18 @@
 import type { ResolvedSocialProfile } from "@/lib/types";
-import { normalizeSocialUrl } from "@/lib/social/normalize";
-import { fallbackUserName, sanitizeHandle } from "@/lib/social/resolvers/shared";
+import { buildResolvedProfile, sanitizeHandle } from "@/lib/social/resolvers/shared";
 
 export function resolveXProfile(inputUrl: string): ResolvedSocialProfile {
   const url = new URL(inputUrl);
   const handle = getHandle(url);
-  const warnings = handle ? [] : ["X の URL から user_id を特定できなかったため、手動入力してください。"];
-
-  return {
+  return buildResolvedProfile({
     platform: "x",
-    originalUrl: inputUrl,
-    normalizedUrl: normalizeSocialUrl(inputUrl, "x"),
-    userId: handle,
-    userName: fallbackUserName(handle, "X"),
-    profileUrl: handle ? `https://twitter.com/${handle}` : "https://twitter.com/",
-    viewCount: "",
-    likeCount: "",
-    warnings,
-  };
+    inputUrl,
+    handle,
+    fallbackLabel: "X",
+    emptyProfileUrl: "https://twitter.com/",
+    warningMessage: "X の URL から user_id を特定できなかったため、手動入力してください。",
+    profileUrl: (userId) => `https://twitter.com/${userId}`,
+  });
 }
 
 function getHandle(url: URL): string {

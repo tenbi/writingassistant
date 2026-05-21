@@ -49,6 +49,10 @@ export function renderTemplate({ templateId, profile, creditType, reactionUrls }
 }
 
 function buildUserIdLink(userIdWithAt: string, profileUrl: string): string {
+  if (!userIdWithAt) {
+    return "";
+  }
+
   return `<a href="${escapeAttribute(profileUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(userIdWithAt)}</a>`;
 }
 
@@ -86,7 +90,13 @@ function buildCreditText(
 }
 
 function ensureAtPrefix(userId: string): string {
-  return userId.startsWith("@") ? userId : `@${userId}`;
+  const cleanedUserId = userId.trim();
+
+  if (!cleanedUserId) {
+    return "";
+  }
+
+  return cleanedUserId.startsWith("@") ? cleanedUserId : `@${cleanedUserId}`;
 }
 
 function resolveAuthorLabel(userName: string, userIdWithAt: string): string {

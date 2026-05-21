@@ -25,6 +25,11 @@ export function normalizeSocialUrl(inputUrl: string, platform: SupportedPlatform
 
 function normalizeInstagramPath(pathname: string): string {
   const segments = pathname.split("/").filter(Boolean);
+
+  if (isCanonicalInstagramPostPath(segments)) {
+    return pathname;
+  }
+
   const postTypeIndex = segments.findIndex((segment) =>
     ["p", "reel", "reels"].includes(segment.toLowerCase()),
   );
@@ -35,6 +40,10 @@ function normalizeInstagramPath(pathname: string): string {
 
   const shortcode = segments[postTypeIndex + 1];
   return shortcode ? `/p/${shortcode}` : pathname;
+}
+
+function isCanonicalInstagramPostPath(segments: string[]): boolean {
+  return segments.length === 2 && segments[0].toLowerCase() === "p" && Boolean(segments[1]);
 }
 
 function cleanupPath(pathname: string): string {

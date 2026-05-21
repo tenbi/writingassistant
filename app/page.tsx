@@ -69,7 +69,7 @@ export default function Page() {
   }
 
   async function generateOutput() {
-    if (!profile.normalizedUrl || !profile.userId || !profile.profileUrl) {
+    if (!profile.normalizedUrl || !profile.profileUrl) {
       setOutput("");
       setRenderError("");
       return;
